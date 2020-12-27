@@ -13,7 +13,7 @@ height = int(vidcap.get(3))
 fourcc = VideoWriter_fourcc(*'XVID')
 videoWriter = VideoWriter('output.avi', fourcc, float(FPS), (height, width))
 count = 0
-max_count = 100
+max_count = 20000
 last_frames = []
 
 number_of_threads = 1
@@ -24,14 +24,14 @@ print('height =', height)
 def calculate_frame(image):
     global last_frames
     image = np.matrix.flatten(image)
-    # image = np.int8(image)
+    image = np.int8(image)
     image_copy = deepcopy(image)
     if len(last_frames) >= 1:
         last_frame = last_frames[-1]
-        image = np.subtract(np.maximum(image, last_frame), np.minimum(image, last_frame))
+        image = np.absolute(np.subtract(image, last_frame))
         last_frames = last_frames[1:]
     last_frames.append(image_copy)
-    # image = np.uint8(image)
+    image = np.uint8(image)
     image = np.resize(image, (width, height, 3)) 
     videoWriter.write(image)
 
