@@ -3,3 +3,4 @@
 *~
 *.text
 *.log
+__pycache__
