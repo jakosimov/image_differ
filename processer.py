@@ -11,7 +11,7 @@ class Processer:
         self.videoWriter = VideoWriter(output_file, fourcc, float(FPS), (self.height, self.width))
         self.max_count = max_count
 
-    def run(self, proc_func):
+    def run(self, proc_func, end_proc=None):
         count = 0
         success = True
         while success and (count < self.max_count or self.max_count == -1):
@@ -20,6 +20,8 @@ class Processer:
             print('Count:', count)
             count += 1
 
+        if end_proc is not None:
+            end_proc(self.videoWriter)
         self.videoWriter.release()
         self.vidcap.release()
         print('Total count:', count)
