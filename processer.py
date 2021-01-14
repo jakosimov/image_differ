@@ -2,7 +2,7 @@ import cv2
 from cv2 import VideoWriter, VideoWriter_fourcc, VideoCapture
 
 class Processer:
-    def __init__(self, input_file, output_file, FPS, max_count):
+    def __init__(self, input_file, output_file, FPS=30, max_count=-1):
         self.vidcap = VideoCapture(input_file)
         success, self.image = self.vidcap.read()
         self.width = int(self.vidcap.get(4))
