@@ -1,6 +1,7 @@
 import processer
 import numpy as np
 from collections import deque
+import sys
 
 file_name = sys.argv[1]
 
@@ -10,7 +11,7 @@ frames_to_save = 30
 saved_frames_frequency = 2
 frames_to_skip = 300
 
-processer = processer.Processer(input_file, output_file)
+processer = processer.Processer(input_file, output_file, max_count=-1)
 width = processer.width
 height = processer.height
 last_frames = deque()
@@ -21,8 +22,8 @@ total = np.full((width, height, 3), 0)
 print('width =', width)
 print('height =', height)
 
-def calculate_frame(image, count, width, height, videoWriter):
-    global last_frames, running_total
+def calculate_frame(image, count, width, height):
+    global last_frames, running_total, total
 
     original_image = np.int32(image)
 
@@ -46,9 +47,11 @@ def calculate_frame(image, count, width, height, videoWriter):
     total = total + image
 
     image = np.uint8(image)
-    videoWriter.write(image)
+    return image
 
 processer.run(calculate_frame)
-np.savetxt(file_name + '_total.txt', total)
+with open(file_name + '_total.npy', 'wb') as f:
+    total = np.resize(total, (width*height*3,))
+    np.save(f, total)
     
     

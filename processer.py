@@ -15,7 +15,8 @@ class Processer:
         count = 0
         success = True
         while success and (count < self.max_count or self.max_count == -1):
-            proc_func(self.image, count, self.width, self.height, self.videoWriter)
+            result = proc_func(self.image, count, self.width, self.height)
+            self.videoWriter.write(result)
             success, self.image = self.vidcap.read()
             print('Count:', count)
             count += 1

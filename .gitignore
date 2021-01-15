@@ -4,3 +4,5 @@
 *.text
 *.log
 __pycache__
+*.txt
+*.npy
