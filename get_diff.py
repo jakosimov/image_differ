@@ -7,8 +7,8 @@ file_name = sys.argv[1]
 
 input_file = file_name + '.mp4'
 output_file = 'diff_' + file_name + '.avi'
-frames_to_save = 30 
-saved_frames_frequency = 2
+frames_to_save = 45 
+saved_frames_frequency = 3
 frames_to_skip = 300
 
 processer = processer.Processer(input_file, output_file, max_count=-1)
