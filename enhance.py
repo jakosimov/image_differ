@@ -10,9 +10,9 @@ if len(sys.argv) >= 3:
 
 input_file = '' + file_name + '.mp4'
 output_file = 'out_' + file_name + '.avi'
-emphasis_factor = 50.0
+emphasis_factor = 1.0
 threshold = 2.0
-neighbour_threshold = 10
+neighbour_threshold = 15
 average_threshold = 3.0
 
 frames_to_save = 30
@@ -48,9 +48,11 @@ def get_sum_of_neighbours(image):
     left = np.pad(image[:,:-1], ((0, 0), (1, 0)), constant_values=(0))
     return bot + top + right + left
 
-def filter_by_neighbours(image):
+def filter_by_neighbours(image, threshold=None):
+    if threshold is None:
+        threshold = neighbour_threshold
     neighbours = get_sum_of_neighbours(image)
-    return (neighbours >= neighbour_threshold) * image 
+    return (neighbours >= threshold) * image 
 
 with open(file_name + '_total.npy', 'rb') as f:
     total = np.load(f, allow_pickle=True)
@@ -96,7 +98,6 @@ def calculate_frame(image, count, width, height):
             running_total = np.subtract(running_total, first_frame)
     else:
         image = np.full((width, height, 3), 0)
-        # should_save_frame = True
 
     if should_save_frame:
         last_frames.append(original_image)
@@ -108,9 +109,13 @@ def calculate_frame(image, count, width, height):
     image = apply_threshold(image)
 
     image = filter_by_neighbours(image)
+    image = filter_by_last_empty(image)
+    image = image * (get_sum_of_neighbours(image) > 0.0)
+
+    for _ in range(5):
+        image = image / 3 + get_sum_of_neighbours(image) / 6
 
     image = scale_by_factor(image)
-    image = filter_by_last_empty(image)
 
     image = from_pixel_form(image)
 

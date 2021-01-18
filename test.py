@@ -14,8 +14,26 @@ def filter_by_non_empty_neighbours(image):
     return image
 
 test_data = np.array(
-  [[1, 1, 3],
-   [0, 5, 0],
-   [7, 0, 9]]
+  [[1, 1, 3, 0, 5, 0],
+   [0, 5, 0, 7, 0, 9],
+   [7, 0, 9, 1, 1, 3],
+   [1, 1, 3, 0, 5, 0],
+   [0, 5, 0, 7, 0, 9],
+   [7, 0, 9, 1, 1, 3]
+   ]
 )
-print(filter_by_non_empty_neighbours(test_data))
+test_data2 = np.array(
+  [[0, 0, 0, 0, 0, 0, 0],
+   [0, 0, 0, 0, 0, 1, 0],
+   [0, 0, 0, 0, 0, 0, 0],
+   [0, 0, 0, 1, 0, 0, 0],
+   [0, 0, 0, 0, 0, 0, 0],
+   [0, 0, 0, 0, 0, 0, 0],
+   [0, 0, 0, 0, 0, 0, 0]
+   ]
+)
+hej = test_data2 + get_sum_of_neighbours(test_data2)
+hej = hej + get_sum_of_neighbours(hej)
+print(hej)
+# print(get_sum_of_neighbours(test_data))
+# print(filter_by_non_empty_neighbours(test_data))
