@@ -1,5 +1,10 @@
 # image_differ
-## Prerequisites
+
+## Författarskap
+
+All kod tillhör Jakob Alwall Lundberg.
+
+## Förberedelser
 Kör
 ```
 pip3 install numpy && pip3 install opencv-python
